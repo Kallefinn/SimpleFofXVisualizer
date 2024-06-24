@@ -36,6 +36,8 @@ qt_add_qml_module(appPlottingApplication
         InputButtons.qml
         Text_Input.qml
         Screen01.qml
+        SettingsMenu.qml
+        QML_FILES InputHandler.qml
 )
 
 # Qt for iOS sets MACOSX_BUNDLE_GUI_IDENTIFIER automatically since Qt 6.1.

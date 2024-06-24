@@ -40,67 +40,9 @@ Rectangle {
         onAccepted: myChart.backgroundColor = selectedColor
     }
 
-    Menu {
+    SettingsMenu {
         id: settings
-        title: qsTr("settings")
-        visible: false
-
-        Menu {
-            title: qsTr("Export")
-            MenuItem {
-                text: qsTr("Png")
-
-                onTriggered: {filedialog.defaultSuffix = qsTr(".png"); filedialog.open()}
-            }
-            MenuItem {
-                text: qsTr("SVG (not implemented yet)")
-            }
-
-        }
-
-        Menu {
-            title: qsTr("Style")
-            MenuItem {
-                text: qsTr("Light")
-                onTriggered: myChart.theme = ChartView.ChartThemeLight
-            }
-            MenuItem {
-                text: qsTr("Blue Cerulean")
-                onTriggered: myChart.theme = ChartView.ChartThemeBlueCerulean
-            }
-            MenuItem {
-                text: qsTr("Dark")
-                onTriggered: myChart.theme = ChartView.ChartThemeDark
-            }
-            MenuItem {
-                text: qsTr("Brown Sand")
-                onTriggered: myChart.theme = ChartView.ChartThemeBrownSand
-            }
-            MenuItem {
-                text: qsTr("Blue Ncs")
-                onTriggered: myChart.theme = ChartView.ChartThemeBlueNcs
-            }
-            MenuItem {
-                text: qsTr("High Contrast")
-                onTriggered: myChart.theme = ChartView.ChartThemeHighContrast
-            }
-            MenuItem {
-                text: qsTr("Blue Icy")
-                onTriggered: myChart.theme = ChartView.ChartThemeBlueIcy
-            }
-            MenuItem {
-                text: qsTr("Qt")
-                onTriggered: myChart.theme = ChartView.ChartThemeQt
-            }
-        }
-        MenuItem {
-            text: qsTr("Background Color")
-            onTriggered: colorDialog.open()
-        }
-
-        //Item: ["Anzeige"]
     }
-
 
     ChartView {
         id: myChart
@@ -128,55 +70,7 @@ Rectangle {
             tickCount: 5
         }
 
-
-        MouseArea {
-            id: touchMode
-            anchors.fill: parent
-            scrollGestureEnabled: true
-
-            //Zoom and Panning
-            onWheel: (wheel) => {
-                         wheel.accepted = true
-                         if (Qt.ControlModifier & wheel.modifiers) {
-                             if (wheel.angleDelta.y > 0) {
-                                 myChart.zoom(1.035)
-                             }else if(wheel.angleDelta.y < 0) {
-                                 myChart.zoom(0.965)
-                             }
-                         } else {
-                             dragTarget.x += wheel.angleDelta.x * 0.7
-                             dragTarget.y += wheel.angleDelta.y * 0.7
-                         }
-                     }
-
-            MouseArea {
-                id: mouseMode
-                anchors.fill: parent
-                scrollGestureEnabled: false
-                propagateComposedEvents: true
-                drag.target: dragTarget
-                drag.axis: Drag.XAndYAxis
-
-                acceptedButtons: {Qt.LeftButton | Qt.RightButton}
-                onPressed: {
-
-                    if(pressedButtons & Qt.RightButton) {
-                        settings.popup()
-                    }
-                }
-
-                onWheel: (wheel) => {
-                             wheel.accepted = true
-                             if (wheel.angleDelta.y > 0) {
-                                 myChart.zoom(1.035)
-                             }else if(wheel.angleDelta.y < 0) {
-                                 myChart.zoom(0.965)
-                             }
-                         }
-                onDoubleClicked: {
-                    myChart.zoomReset();
-                }
-            }
+        InputHandler {
         }
 
         Item {
@@ -197,5 +91,6 @@ Rectangle {
                 oldY = y;
             }
         }
+
     }
 }
