@@ -9,6 +9,7 @@ Check out https://doc.qt.io/qtcreator/creator-quick-ui-forms.html for details on
 
 import QtQuick
 import QtQuick.Controls
+import QtQuick.Dialogs
 import QtCharts
 
 Rectangle {
@@ -24,6 +25,16 @@ Rectangle {
         anchors.horizontalCenterOffset: 0
     }
 
+
+    FileDialog {
+        id: filedialog
+        fileMode: FileDialog.SaveFile
+        defaultSuffix: qsTr(".png")
+        onAccepted: {console.log(filedialog.currentFile); myChart.grabToImage(function(result)
+            {result.saveToFile(filedialog.selectedFile)})
+        }
+    }
+
     Menu {
         id: settings
         title: qsTr("settings")
@@ -33,10 +44,12 @@ Rectangle {
             title: qsTr("Export")
             MenuItem {
                 text: qsTr("Png")
+                onTriggered: filedialog.open()
             }
             MenuItem {
                 text: qsTr("SVG")
             }
+
         }
 
         Menu {
@@ -46,7 +59,7 @@ Rectangle {
                 onTriggered: myChart.theme = ChartView.ChartThemeLight
             }
             MenuItem {
-                text: qsTr("BlueCerulean")
+                text: qsTr("Blue Cerulean")
                 onTriggered: myChart.theme = ChartView.ChartThemeBlueCerulean
             }
             MenuItem {
@@ -54,19 +67,19 @@ Rectangle {
                 onTriggered: myChart.theme = ChartView.ChartThemeDark
             }
             MenuItem {
-                text: qsTr("BrownSand")
+                text: qsTr("Brown Sand")
                 onTriggered: myChart.theme = ChartView.ChartThemeBrownSand
             }
             MenuItem {
-                text: qsTr("BlueNcs")
+                text: qsTr("Blue Ncs")
                 onTriggered: myChart.theme = ChartView.ChartThemeBlueNcs
             }
             MenuItem {
-                text: qsTr("HighContrast")
+                text: qsTr("High Contrast")
                 onTriggered: myChart.theme = ChartView.ChartThemeHighContrast
             }
             MenuItem {
-                text: qsTr("BlueIcy")
+                text: qsTr("Blue Icy")
                 onTriggered: myChart.theme = ChartView.ChartThemeBlueIcy
             }
             MenuItem {
@@ -96,9 +109,6 @@ Rectangle {
             tickCount: 5
             min: -6
             max: 6
-            onRangeChanged: {
-
-            }
         }
 
         ValuesAxis {
