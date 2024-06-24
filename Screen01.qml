@@ -24,13 +24,59 @@ Rectangle {
         anchors.horizontalCenterOffset: 0
     }
 
-    ComboBox {
-        id: comboBox
-        anchors.margins: 5
-        anchors.left: parent.left
-        anchors.bottom: parent.bottom
-        displayText: "Settings"
-        model: ["SVG Export", "Png Export", "Anzeige", "Hintergrundfarbe"]
+    Menu {
+        id: settings
+        title: qsTr("settings")
+        visible: false
+
+        Menu {
+            title: qsTr("Export")
+            MenuItem {
+                text: qsTr("Png")
+            }
+            MenuItem {
+                text: qsTr("SVG")
+            }
+        }
+
+        Menu {
+            title: qsTr("Style")
+            MenuItem {
+                text: qsTr("Light")
+                onTriggered: myChart.theme = ChartView.ChartThemeLight
+            }
+            MenuItem {
+                text: qsTr("BlueCerulean")
+                onTriggered: myChart.theme = ChartView.ChartThemeBlueCerulean
+            }
+            MenuItem {
+                text: qsTr("Dark")
+                onTriggered: myChart.theme = ChartView.ChartThemeDark
+            }
+            MenuItem {
+                text: qsTr("BrownSand")
+                onTriggered: myChart.theme = ChartView.ChartThemeBrownSand
+            }
+            MenuItem {
+                text: qsTr("BlueNcs")
+                onTriggered: myChart.theme = ChartView.ChartThemeBlueNcs
+            }
+            MenuItem {
+                text: qsTr("HighContrast")
+                onTriggered: myChart.theme = ChartView.ChartThemeHighContrast
+            }
+            MenuItem {
+                text: qsTr("BlueIcy")
+                onTriggered: myChart.theme = ChartView.ChartThemeBlueIcy
+            }
+            MenuItem {
+                text: qsTr("Qt")
+                onTriggered: myChart.theme = ChartView.ChartThemeQt
+            }
+
+        }
+
+        //Item: ["SVG Export", "Png Export", "Anzeige", "Hintergrundfarbe"]
     }
 
 
@@ -66,9 +112,18 @@ Rectangle {
 
         MouseArea {
             anchors.fill: parent
+            acceptedButtons: {Qt.LeftButton | Qt.RightButton}
+            onPressed: {
+
+                if(pressedButtons & Qt.RightButton) {
+                    settings.popup()
+                }
+            }
+
             scrollGestureEnabled: true
             drag.target: dragTarget
             drag.axis: Drag.XAndYAxis
+            //Zoom and Panning
             onWheel: (wheel) => {
                          if (Qt.ControlModifier & wheel.modifiers) {
                              if (wheel.angleDelta.y > 0) {
