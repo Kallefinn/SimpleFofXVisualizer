@@ -33,6 +33,7 @@ Rectangle {
         model: ["SVG Export", "Png Export", "Anzeige", "Hintergrundfarbe"]
     }
 
+
     ChartView {
         id: myChart
 
@@ -62,19 +63,25 @@ Rectangle {
             tickCount: 5
         }
 
-        MouseArea{
+
+        MouseArea {
             anchors.fill: parent
+            scrollGestureEnabled: true
             drag.target: dragTarget
             drag.axis: Drag.XAndYAxis
             onWheel: (wheel) => {
-                         wheel.accepted = true
-                         if (wheel.angleDelta.y > 0) {
-                             myChart.zoom(1.1)
-                         }else {
-                             myChart.zoom(0.9)
+                         if (Qt.ControlModifier & wheel.modifiers) {
+                             if (wheel.angleDelta.y > 0) {
+                                 myChart.zoom(1.035)
+                             }else if(wheel.angleDelta.y < 0) {
+                                 myChart.zoom(0.965)
+                             }
+                         } else {
+                             dragTarget.x += wheel.angleDelta.x * 0.7
+                             dragTarget.y += wheel.angleDelta.y * 0.7
+                             wheel.accepted = true
                          }
                      }
-
             onDoubleClicked: {
                 myChart.zoomReset();
             }
