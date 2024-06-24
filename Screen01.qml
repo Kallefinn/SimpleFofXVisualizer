@@ -30,9 +30,14 @@ Rectangle {
         id: filedialog
         fileMode: FileDialog.SaveFile
         defaultSuffix: qsTr(".png")
-        onAccepted: {console.log(filedialog.currentFile); myChart.grabToImage(function(result)
+        onAccepted: {myChart.grabToImage(function(result)
             {result.saveToFile(filedialog.selectedFile)})
         }
+    }
+
+    ColorDialog {
+        id: colorDialog
+        onAccepted: myChart.backgroundColor = selectedColor
     }
 
     Menu {
@@ -44,10 +49,11 @@ Rectangle {
             title: qsTr("Export")
             MenuItem {
                 text: qsTr("Png")
-                onTriggered: filedialog.open()
+
+                onTriggered: {filedialog.defaultSuffix = qsTr(".png"); filedialog.open()}
             }
             MenuItem {
-                text: qsTr("SVG")
+                text: qsTr("SVG (not implemented yet)")
             }
 
         }
@@ -86,10 +92,13 @@ Rectangle {
                 text: qsTr("Qt")
                 onTriggered: myChart.theme = ChartView.ChartThemeQt
             }
-
+        }
+        MenuItem {
+            text: qsTr("Background Color")
+            onTriggered: colorDialog.open()
         }
 
-        //Item: ["SVG Export", "Png Export", "Anzeige", "Hintergrundfarbe"]
+        //Item: ["Anzeige"]
     }
 
 
@@ -121,20 +130,13 @@ Rectangle {
 
 
         MouseArea {
+            id: touchMode
             anchors.fill: parent
-            acceptedButtons: {Qt.LeftButton | Qt.RightButton}
-            onPressed: {
-
-                if(pressedButtons & Qt.RightButton) {
-                    settings.popup()
-                }
-            }
-
             scrollGestureEnabled: true
-            drag.target: dragTarget
-            drag.axis: Drag.XAndYAxis
+
             //Zoom and Panning
             onWheel: (wheel) => {
+                         wheel.accepted = true
                          if (Qt.ControlModifier & wheel.modifiers) {
                              if (wheel.angleDelta.y > 0) {
                                  myChart.zoom(1.035)
@@ -144,11 +146,36 @@ Rectangle {
                          } else {
                              dragTarget.x += wheel.angleDelta.x * 0.7
                              dragTarget.y += wheel.angleDelta.y * 0.7
-                             wheel.accepted = true
                          }
                      }
-            onDoubleClicked: {
-                myChart.zoomReset();
+
+            MouseArea {
+                id: mouseMode
+                anchors.fill: parent
+                scrollGestureEnabled: false
+                propagateComposedEvents: true
+                drag.target: dragTarget
+                drag.axis: Drag.XAndYAxis
+
+                acceptedButtons: {Qt.LeftButton | Qt.RightButton}
+                onPressed: {
+
+                    if(pressedButtons & Qt.RightButton) {
+                        settings.popup()
+                    }
+                }
+
+                onWheel: (wheel) => {
+                             wheel.accepted = true
+                             if (wheel.angleDelta.y > 0) {
+                                 myChart.zoom(1.035)
+                             }else if(wheel.angleDelta.y < 0) {
+                                 myChart.zoom(0.965)
+                             }
+                         }
+                onDoubleClicked: {
+                    myChart.zoomReset();
+                }
             }
         }
 
