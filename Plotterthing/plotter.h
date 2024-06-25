@@ -23,6 +23,10 @@ class Plotter : public QObject
 
 public:
 
+    Q_INVOKABLE void setColor(const QColor& color) {
+        reference->setColor(color);
+    }
+
     Q_INVOKABLE void appendList(QLineSeries* series) {
         series->replace(m_Line);
         reference = series;

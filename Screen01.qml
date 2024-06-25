@@ -37,7 +37,8 @@ Rectangle {
 
     ColorDialog {
         id: colorDialog
-        onAccepted: myChart.backgroundColor = selectedColor
+        options: colorDialog.ShowAlphaChannel
+        onSelectedColorChanged: myChart.backgroundColor = selectedColor
     }
 
     SettingsMenu {
@@ -46,7 +47,7 @@ Rectangle {
 
     ChartView {
         id: myChart
-
+        legend.visible: false
         width: parent.width * 0.9
         height: parent.height * 0.8
 
