@@ -9,6 +9,7 @@ Check out https://doc.qt.io/qtcreator/creator-quick-ui-forms.html for details on
 
 import QtQuick
 import QtQuick.Controls
+import QtQuick.Dialogs
 import QtCharts
 
 Rectangle {
@@ -24,13 +25,23 @@ Rectangle {
         anchors.horizontalCenterOffset: 0
     }
 
-    ComboBox {
-        id: comboBox
-        anchors.margins: 5
-        anchors.left: parent.left
-        anchors.bottom: parent.bottom
-        displayText: "Settings"
-        model: ["SVG Export", "Png Export", "Anzeige", "Hintergrundfarbe"]
+
+    FileDialog {
+        id: filedialog
+        fileMode: FileDialog.SaveFile
+        defaultSuffix: qsTr(".png")
+        onAccepted: {myChart.grabToImage(function(result)
+            {result.saveToFile(filedialog.selectedFile)})
+        }
+    }
+
+    ColorDialog {
+        id: colorDialog
+        onAccepted: myChart.backgroundColor = selectedColor
+    }
+
+    SettingsMenu {
+        id: settings
     }
 
     ChartView {
@@ -49,9 +60,6 @@ Rectangle {
             tickCount: 5
             min: -6
             max: 6
-            onRangeChanged: {
-
-            }
         }
 
         ValuesAxis {
@@ -62,22 +70,15 @@ Rectangle {
             tickCount: 5
         }
 
-        MouseArea{
-            anchors.fill: parent
-            drag.target: dragTarget
-            drag.axis: Drag.XAndYAxis
-            onWheel: (wheel) => {
-                         wheel.accepted = true
-                         if (wheel.angleDelta.y > 0) {
-                             myChart.zoom(1.1)
-                         }else {
-                             myChart.zoom(0.9)
-                         }
-                     }
+        ValuesAxis {
+            id: axisZ
+            min: -6
+            max: 6
+            gridVisible: true
+            tickCount: 5
+        }
 
-            onDoubleClicked: {
-                myChart.zoomReset();
-            }
+        InputHandler {
         }
 
         Item {
@@ -98,5 +99,6 @@ Rectangle {
                 oldY = y;
             }
         }
+
     }
 }

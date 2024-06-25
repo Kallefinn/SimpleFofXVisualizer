@@ -6,6 +6,7 @@ import QtCharts
 
 TextField {
     id: textfield
+    text: qsTr("x")
     placeholderText: qsTr("delete?")
     placeholderTextColor: "white"
     verticalAlignment: TextInput.AlignVCenter
@@ -14,7 +15,7 @@ TextField {
     color: "white"
     padding: 3
     font.pixelSize: 20
-
+    Component.onCompleted: createLine()
     onEditingFinished: createLine()
     onAccepted: destroywhenempty()
     onTextEdited: { adjustWidth(); deleteText(); }

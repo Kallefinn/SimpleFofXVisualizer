@@ -22,7 +22,7 @@ void Parser::trig_function(const std::string& func, float min, float max, QVecto
     parser_t parser;
     parser.compile(expression_string,expression);
 
-    float resolution = ((max-min)/100);
+    float resolution = ((max-min)/1000);
     list.clear();
     list.reserve(resolution*(min+max));
     for (x = min; x <= max; x += resolution)
