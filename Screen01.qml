@@ -70,6 +70,14 @@ Rectangle {
             tickCount: 5
         }
 
+        ValuesAxis {
+            id: axisZ
+            min: -6
+            max: 6
+            gridVisible: true
+            tickCount: 5
+        }
+
         InputHandler {
         }
 
