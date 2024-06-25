@@ -61,8 +61,8 @@ private slots:
 private:
 
     QString m_Name;
-    QString m_Text;
-    QVector<QPointF> m_Line{{-9.0,-9.0},{-5.0,-5.0},{0.0,0.0},{5.0,5.0},{9.0,9.0}};
+    QString m_Text{"x"};
+    QVector<QPointF> m_Line;
     QLineSeries* reference;
 
     void updateList();
