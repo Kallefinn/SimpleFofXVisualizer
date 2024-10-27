@@ -8,7 +8,7 @@ Window {
     id: window
 
     visible: true
-    title: qsTr("Hello World")
+    title: qsTr("Simple f(X) Visualizer")
     width: 1060
     height: 600
     Screen01 {
