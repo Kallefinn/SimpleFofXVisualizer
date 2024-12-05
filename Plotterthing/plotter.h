@@ -7,7 +7,7 @@
 #include <QList>
 #include <QtCharts/QLineSeries>
 #include <QValueAxis>
-
+#include <parser.h>
 
 
 class Plotter : public QObject
@@ -22,6 +22,10 @@ class Plotter : public QObject
     Q_PROPERTY(QValueAxis *yAxis READ yAxis WRITE setYAxis NOTIFY yAxisChanged FINAL)
 
 public:
+
+    Q_INVOKABLE void setColor(const QColor& color) {
+        reference->setColor(color);
+    }
 
     Q_INVOKABLE void appendList(QLineSeries* series) {
         series->replace(m_Line);
@@ -65,10 +69,14 @@ private:
     QVector<QPointF> m_Line;
     QLineSeries* reference;
 
+    void updateExpr();
     void updateList();
     static int counter;
     QValueAxis *m_xAxis;
     QValueAxis *m_yAxis;
+
+    Parser parser;
+
 };
 
 #endif // PLOTTER_H

@@ -33,6 +33,7 @@ MouseArea {
                  }
              }
 
+
     MouseArea {
         id: mouseMode
         anchors.fill: parent
@@ -49,14 +50,6 @@ MouseArea {
             }
         }
 
-        onWheel: (wheel) => {
-                     wheel.accepted = true
-                     if (wheel.angleDelta.y > 0) {
-                         myChart.zoom(1.035)
-                     }else if(wheel.angleDelta.y < 0) {
-                         myChart.zoom(0.965)
-                     }
-                 }
         onDoubleClicked: {
             myChart.zoomReset();
         }

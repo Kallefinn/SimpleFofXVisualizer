@@ -2,6 +2,7 @@ import QtQuick
 import QtQuick.Controls
 import Plotterthing
 import QtCharts
+import QtQuick.Dialogs
 
 
 TextField {
@@ -28,6 +29,33 @@ TextField {
 
     }
 
+    ColorDialog {
+        id: colorChooser
+        options: ColorDialog.ShowAlphaChannel
+
+        onSelectedColorChanged: plotter.setColor(selectedColor);
+    }
+
+    Menu {
+        id: styleMenu
+        MenuItem {
+            text: qsTr("Color")
+            onTriggered: {
+                colorChooser.open();
+            }
+        }
+    }
+
+    MouseArea {
+        propagateComposedEvents: true
+        anchors.fill: parent
+        acceptedButtons: Qt.RightButton
+        onPressed: {
+            if(pressedButtons & Qt.RightButton) {
+                styleMenu.popup()
+            }
+        }
+    }
 
     Plotter {
         id: plotter
