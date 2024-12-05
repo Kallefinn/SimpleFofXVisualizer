@@ -7,7 +7,7 @@
 #include <QList>
 #include <QtCharts/QLineSeries>
 #include <QValueAxis>
-
+#include <parser.h>
 
 
 class Plotter : public QObject
@@ -69,10 +69,14 @@ private:
     QVector<QPointF> m_Line;
     QLineSeries* reference;
 
+    void updateExpr();
     void updateList();
     static int counter;
     QValueAxis *m_xAxis;
     QValueAxis *m_yAxis;
+
+    Parser parser;
+
 };
 
 #endif // PLOTTER_H

@@ -1,5 +1,4 @@
 #include "plotter.h"
-#include <parser.h>
 
 int Plotter::counter = 0;
 
@@ -34,6 +33,7 @@ const QString& Plotter::Text()
 void Plotter::setText(const QString& text)
 {
     m_Text = text;
+    updateExpr();
     updateList();
 }
 
@@ -42,9 +42,13 @@ const QList<QPointF> &Plotter::Line()
     return m_Line;
 }
 
+void Plotter::updateExpr() {
+    parser.parse_function(m_Text.toStdString());
+}
+
 void Plotter::updateList()
 {
-    Parser::trig_function(Text().toStdString(),m_xAxis->min(),m_xAxis->max(),m_Line);
+    parser.update_function(m_xAxis->min(),m_xAxis->max(),m_Line);
 }
 
 QValueAxis *Plotter::xAxis() const

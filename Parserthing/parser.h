@@ -8,7 +8,12 @@
 class Parser {
 public:
     Parser();
-    static void trig_function(const std::string& func, float min, float max, QVector<QPointF> &list);
-
+    void parse_function(const std::string& func);
+    void update_function(float min, float max, QVector<QPointF> &list);
+private:
+    exprtk::symbol_table<float> symbol_table;
+    exprtk::expression<float> expression;
+    exprtk::parser<float> parser;
+    float x=0;
 };
 #endif // PARSER_H
