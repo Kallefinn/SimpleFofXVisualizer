@@ -27,6 +27,10 @@ A tool to plott a number of functions on a canvas. Build in Qt with qml
 
 ### Build
   Open project in QtCreator and make sure to have Qt6.7 installed
+### To Do
+  - Visual formulas with [MicroTex](https://github.com/NanoMichael/MicroTeX/tree/master)
+  - Allow for family of functions with range and stepsize with slider
+  - 2 Dimensional Functions?
 
 ## Notes
   This was just a project to learn the whole Qt6 framework along with Cmake and qml.
